@@ -13,6 +13,7 @@ financial ratios, with no third-party runtime dependencies.
 - CAPM cost of equity, after-tax debt cost, and WACC
 - Scope 1/2/3 inventory, emissions intensity, and reduction tracking
 - Simple/log returns, historical volatility, and downside deviation
+- IFRS 9 SPPI structured screening with pass/fail/review outcomes
 - Profitability, liquidity, leverage, and efficiency ratios
 - Input validation with clear error messages
 
@@ -25,6 +26,7 @@ from src.investment_metrics import internal_rate_of_return, net_present_value
 from src.capital_cost import cost_of_equity_capm, weighted_average_cost_of_capital
 from src.carbon_accounting import emissions_from_activity, greenhouse_gas_inventory
 from src.risk_metrics import annualized_volatility, simple_returns
+from src.sppi import assess_sppi
 
 valuation = enterprise_value(
     free_cash_flows=[100, 110, 121],
@@ -41,7 +43,8 @@ scope_1 = emissions_from_activity(5_000, 0.20)
 inventory = greenhouse_gas_inventory({"scope_1": scope_1, "scope_2": 4_200})
 returns = simple_returns([100, 102, 101, 105])
 volatility = annualized_volatility(returns)
-print(valuation, roe, npv, irr, wacc, inventory, volatility)
+sppi = assess_sppi(contingent_feature=True, contingent_related_to_basic_lending=False)
+print(valuation, roe, npv, irr, wacc, inventory, volatility, sppi.status)
 ```
 
 Rates are expressed as decimals, so `0.10` means 10%.
@@ -60,11 +63,13 @@ src/
   financial_ratios.py     # Financial ratio functions
   investment_metrics.py   # Capital budgeting functions
   risk_metrics.py         # Return and volatility functions
+  sppi.py                 # IFRS 9 SPPI screening helper
 requirements.txt          # Runtime dependencies
 ```
 
 ## Disclaimer
 
 This project is for educational and analytical use. It is not financial or
-investment advice.
+investment advice. The SPPI helper is a preliminary screen and does not replace
+review of contractual terms or professional accounting judgement.
 
