@@ -11,6 +11,7 @@ financial ratios, with no third-party runtime dependencies.
 - Enterprise value and equity value bridge
 - NPV, IRR, and simple payback period
 - CAPM cost of equity, after-tax debt cost, and WACC
+- Scope 1/2/3 inventory, emissions intensity, and reduction tracking
 - Profitability, liquidity, leverage, and efficiency ratios
 - Input validation with clear error messages
 
@@ -21,6 +22,7 @@ from src.dcf import enterprise_value
 from src.financial_ratios import return_on_equity
 from src.investment_metrics import internal_rate_of_return, net_present_value
 from src.capital_cost import cost_of_equity_capm, weighted_average_cost_of_capital
+from src.carbon_accounting import emissions_from_activity, greenhouse_gas_inventory
 
 valuation = enterprise_value(
     free_cash_flows=[100, 110, 121],
@@ -33,16 +35,23 @@ npv = net_present_value(0.10, [-1000, 400, 400, 400])
 irr = internal_rate_of_return([-1000, 400, 400, 400])
 cost_of_equity = cost_of_equity_capm(0.03, 1.2, 0.09)
 wacc = weighted_average_cost_of_capital(750, 250, cost_of_equity, 0.05, 0.25)
-print(valuation, roe, npv, irr, wacc)
+scope_1 = emissions_from_activity(5_000, 0.20)
+inventory = greenhouse_gas_inventory({"scope_1": scope_1, "scope_2": 4_200})
+print(valuation, roe, npv, irr, wacc, inventory)
 ```
 
 Rates are expressed as decimals, so `0.10` means 10%.
+
+Carbon calculations are unit-agnostic. Supply activity data and emission
+factors in compatible units, and use authoritative factors for the relevant
+country, reporting period, and methodology.
 
 ## Project structure
 
 ```text
 src/
   capital_cost.py         # Cost of capital functions
+  carbon_accounting.py    # Carbon inventory and intensity functions
   dcf.py                  # DCF valuation functions
   financial_ratios.py     # Financial ratio functions
   investment_metrics.py   # Capital budgeting functions
