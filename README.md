@@ -12,6 +12,7 @@ financial ratios, with no third-party runtime dependencies.
 - NPV, IRR, and simple payback period
 - CAPM cost of equity, after-tax debt cost, and WACC
 - Scope 1/2/3 inventory, emissions intensity, and reduction tracking
+- Simple/log returns, historical volatility, and downside deviation
 - Profitability, liquidity, leverage, and efficiency ratios
 - Input validation with clear error messages
 
@@ -23,6 +24,7 @@ from src.financial_ratios import return_on_equity
 from src.investment_metrics import internal_rate_of_return, net_present_value
 from src.capital_cost import cost_of_equity_capm, weighted_average_cost_of_capital
 from src.carbon_accounting import emissions_from_activity, greenhouse_gas_inventory
+from src.risk_metrics import annualized_volatility, simple_returns
 
 valuation = enterprise_value(
     free_cash_flows=[100, 110, 121],
@@ -37,7 +39,9 @@ cost_of_equity = cost_of_equity_capm(0.03, 1.2, 0.09)
 wacc = weighted_average_cost_of_capital(750, 250, cost_of_equity, 0.05, 0.25)
 scope_1 = emissions_from_activity(5_000, 0.20)
 inventory = greenhouse_gas_inventory({"scope_1": scope_1, "scope_2": 4_200})
-print(valuation, roe, npv, irr, wacc, inventory)
+returns = simple_returns([100, 102, 101, 105])
+volatility = annualized_volatility(returns)
+print(valuation, roe, npv, irr, wacc, inventory, volatility)
 ```
 
 Rates are expressed as decimals, so `0.10` means 10%.
@@ -55,6 +59,7 @@ src/
   dcf.py                  # DCF valuation functions
   financial_ratios.py     # Financial ratio functions
   investment_metrics.py   # Capital budgeting functions
+  risk_metrics.py         # Return and volatility functions
 requirements.txt          # Runtime dependencies
 ```
 
