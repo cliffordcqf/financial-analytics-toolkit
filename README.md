@@ -14,6 +14,7 @@ financial ratios, with no third-party runtime dependencies.
 - Scope 1/2/3 inventory, emissions intensity, and reduction tracking
 - Simple/log returns, historical volatility, and downside deviation
 - IFRS 9 SPPI structured screening with pass/fail/review outcomes
+- CAS 22 classification and balanced journal-entry templates
 - Profitability, liquidity, leverage, and efficiency ratios
 - Input validation with clear error messages
 
@@ -27,6 +28,7 @@ from src.capital_cost import cost_of_equity_capm, weighted_average_cost_of_capit
 from src.carbon_accounting import emissions_from_activity, greenhouse_gas_inventory
 from src.risk_metrics import annualized_volatility, simple_returns
 from src.sppi import assess_sppi
+from src.cas_financial_instruments import classify_financial_asset, initial_recognition_entry
 
 valuation = enterprise_value(
     free_cash_flows=[100, 110, 121],
@@ -44,7 +46,10 @@ inventory = greenhouse_gas_inventory({"scope_1": scope_1, "scope_2": 4_200})
 returns = simple_returns([100, 102, 101, 105])
 volatility = annualized_volatility(returns)
 sppi = assess_sppi(contingent_feature=True, contingent_related_to_basic_lending=False)
-print(valuation, roe, npv, irr, wacc, inventory, volatility, sppi.status)
+plain_sppi = assess_sppi()
+classification = classify_financial_asset(plain_sppi, "hold_to_collect")
+entry = initial_recognition_entry(classification, fair_value=1_000, transaction_costs=10)
+print(valuation, roe, npv, irr, wacc, inventory, volatility, sppi.status, entry)
 ```
 
 Rates are expressed as decimals, so `0.10` means 10%.
@@ -59,6 +64,7 @@ country, reporting period, and methodology.
 src/
   capital_cost.py         # Cost of capital functions
   carbon_accounting.py    # Carbon inventory and intensity functions
+  cas_financial_instruments.py  # CAS 22 classification and journal entries
   dcf.py                  # DCF valuation functions
   financial_ratios.py     # Financial ratio functions
   investment_metrics.py   # Capital budgeting functions
@@ -71,5 +77,7 @@ requirements.txt          # Runtime dependencies
 
 This project is for educational and analytical use. It is not financial or
 investment advice. The SPPI helper is a preliminary screen and does not replace
-review of contractual terms or professional accounting judgement.
+review of contractual terms or professional accounting judgement. CAS journal
+entries are templates whose account mapping must be aligned with the entity's
+accounting policies and chart of accounts.
 
