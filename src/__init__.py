@@ -22,10 +22,12 @@ from .risk_metrics import (
     log_returns,
     simple_returns,
 )
+from .sppi import SPPIAssessment, assess_sppi
 
 __all__ = [
     "after_tax_cost_of_debt",
     "annualized_volatility",
+    "assess_sppi",
     "cost_of_equity_capm",
     "downside_deviation",
     "emissions_from_activity",
@@ -42,6 +44,7 @@ __all__ = [
     "payback_period",
     "scope_2_emissions",
     "simple_returns",
+    "SPPIAssessment",
     "terminal_value",
     "weighted_average_cost_of_capital",
 ]
