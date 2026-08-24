@@ -23,6 +23,14 @@ from .cas_financial_instruments import (
     initial_recognition_entry,
 )
 from .dcf import enterprise_value, equity_value, terminal_value
+from .expected_credit_loss import (
+    ECLScenario,
+    determine_ecl_stage,
+    ecl_adjustment_entry,
+    interest_revenue_basis,
+    loss_horizon,
+    probability_weighted_ecl,
+)
 from .investment_metrics import internal_rate_of_return, net_present_value, payback_period
 from .risk_metrics import (
     annualized_volatility,
@@ -40,6 +48,9 @@ __all__ = [
     "classify_financial_asset",
     "cost_of_equity_capm",
     "downside_deviation",
+    "determine_ecl_stage",
+    "ECLScenario",
+    "ecl_adjustment_entry",
     "effective_interest_entry",
     "emissions_from_activity",
     "emissions_from_sources",
@@ -52,12 +63,15 @@ __all__ = [
     "historical_volatility",
     "impairment_entry",
     "initial_recognition_entry",
+    "interest_revenue_basis",
     "internal_rate_of_return",
     "log_returns",
     "JournalEntry",
     "JournalLine",
+    "loss_horizon",
     "net_present_value",
     "payback_period",
+    "probability_weighted_ecl",
     "scope_2_emissions",
     "simple_returns",
     "SPPIAssessment",
