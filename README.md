@@ -15,6 +15,7 @@ financial ratios, with no third-party runtime dependencies.
 - Simple/log returns, historical volatility, and downside deviation
 - IFRS 9 SPPI structured screening with pass/fail/review outcomes
 - CAS 22 classification and balanced journal-entry templates
+- CAS 22 three-stage expected credit loss and scenario weighting
 - Profitability, liquidity, leverage, and efficiency ratios
 - Input validation with clear error messages
 
@@ -29,6 +30,7 @@ from src.carbon_accounting import emissions_from_activity, greenhouse_gas_invent
 from src.risk_metrics import annualized_volatility, simple_returns
 from src.sppi import assess_sppi
 from src.cas_financial_instruments import classify_financial_asset, initial_recognition_entry
+from src.expected_credit_loss import ECLScenario, probability_weighted_ecl
 
 valuation = enterprise_value(
     free_cash_flows=[100, 110, 121],
@@ -49,7 +51,11 @@ sppi = assess_sppi(contingent_feature=True, contingent_related_to_basic_lending=
 plain_sppi = assess_sppi()
 classification = classify_financial_asset(plain_sppi, "hold_to_collect")
 entry = initial_recognition_entry(classification, fair_value=1_000, transaction_costs=10)
-print(valuation, roe, npv, irr, wacc, inventory, volatility, sppi.status, entry)
+ecl = probability_weighted_ecl([
+    ECLScenario("base", 0.7, 0.02, 0.40, 1_000, 0.98),
+    ECLScenario("downside", 0.3, 0.08, 0.55, 1_000, 0.95),
+])
+print(valuation, roe, npv, irr, wacc, inventory, volatility, sppi.status, entry, ecl)
 ```
 
 Rates are expressed as decimals, so `0.10` means 10%.
@@ -66,6 +72,7 @@ src/
   carbon_accounting.py    # Carbon inventory and intensity functions
   cas_financial_instruments.py  # CAS 22 classification and journal entries
   dcf.py                  # DCF valuation functions
+  expected_credit_loss.py # CAS 22 ECL calculations
   financial_ratios.py     # Financial ratio functions
   investment_metrics.py   # Capital budgeting functions
   risk_metrics.py         # Return and volatility functions
