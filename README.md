@@ -16,6 +16,7 @@ financial ratios, with no third-party runtime dependencies.
 - IFRS 9 SPPI structured screening with pass/fail/review outcomes
 - CAS 22 classification and balanced journal-entry templates
 - CAS 22 three-stage expected credit loss and scenario weighting
+- Bond pricing, yield to maturity, duration, and convexity
 - Profitability, liquidity, leverage, and efficiency ratios
 - Input validation with clear error messages
 
@@ -31,6 +32,7 @@ from src.risk_metrics import annualized_volatility, simple_returns
 from src.sppi import assess_sppi
 from src.cas_financial_instruments import classify_financial_asset, initial_recognition_entry
 from src.expected_credit_loss import ECLScenario, probability_weighted_ecl
+from src.fixed_income import bond_price, modified_duration, yield_to_maturity
 
 valuation = enterprise_value(
     free_cash_flows=[100, 110, 121],
@@ -55,7 +57,10 @@ ecl = probability_weighted_ecl([
     ECLScenario("base", 0.7, 0.02, 0.40, 1_000, 0.98),
     ECLScenario("downside", 0.3, 0.08, 0.55, 1_000, 0.95),
 ])
-print(valuation, roe, npv, irr, wacc, inventory, volatility, sppi.status, entry, ecl)
+price = bond_price(1_000, 0.05, 5, 0.06)
+ytm = yield_to_maturity(price, 1_000, 0.05, 5)
+duration = modified_duration(1_000, 0.05, 5, ytm)
+print(valuation, roe, npv, irr, wacc, inventory, volatility, sppi.status, entry, ecl, price, ytm, duration)
 ```
 
 Rates are expressed as decimals, so `0.10` means 10%.
@@ -73,6 +78,7 @@ src/
   cas_financial_instruments.py  # CAS 22 classification and journal entries
   dcf.py                  # DCF valuation functions
   expected_credit_loss.py # CAS 22 ECL calculations
+  fixed_income.py         # Bond pricing and interest-rate risk
   financial_ratios.py     # Financial ratio functions
   investment_metrics.py   # Capital budgeting functions
   risk_metrics.py         # Return and volatility functions
