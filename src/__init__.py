@@ -31,6 +31,13 @@ from .expected_credit_loss import (
     loss_horizon,
     probability_weighted_ecl,
 )
+from .fixed_income import (
+    bond_price,
+    convexity,
+    macaulay_duration,
+    modified_duration,
+    yield_to_maturity,
+)
 from .investment_metrics import internal_rate_of_return, net_present_value, payback_period
 from .risk_metrics import (
     annualized_volatility,
@@ -45,8 +52,10 @@ __all__ = [
     "after_tax_cost_of_debt",
     "annualized_volatility",
     "assess_sppi",
+    "bond_price",
     "classify_financial_asset",
     "cost_of_equity_capm",
+    "convexity",
     "downside_deviation",
     "determine_ecl_stage",
     "ECLScenario",
@@ -69,6 +78,8 @@ __all__ = [
     "JournalEntry",
     "JournalLine",
     "loss_horizon",
+    "macaulay_duration",
+    "modified_duration",
     "net_present_value",
     "payback_period",
     "probability_weighted_ecl",
@@ -77,5 +88,6 @@ __all__ = [
     "SPPIAssessment",
     "terminal_value",
     "weighted_average_cost_of_capital",
+    "yield_to_maturity",
 ]
 
