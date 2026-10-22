@@ -22,6 +22,16 @@ from .cas_financial_instruments import (
     impairment_entry,
     initial_recognition_entry,
 )
+from .cas_software_development import (
+    SoftwareRecognition,
+    software_cost_treatment,
+    client_software_cost_entry,
+    client_software_ready_entry,
+    software_cash_entry,
+    contractor_software_revenue_entry,
+    contractor_software_cost_entry,
+    contractor_software_cost_release_entry,
+)
 from .dcf import enterprise_value, equity_value, terminal_value
 from .expected_credit_loss import (
     ECLScenario,
@@ -49,6 +59,15 @@ from .risk_metrics import (
 from .sppi import SPPIAssessment, assess_sppi
 
 __all__ = [
+    "SoftwareRecognition",
+    "software_cost_treatment",
+    "client_software_cost_entry",
+    "client_software_ready_entry",
+    "software_cash_entry",
+    "contractor_software_revenue_entry",
+    "contractor_software_cost_entry",
+    "contractor_software_cost_release_entry",
+
     "after_tax_cost_of_debt",
     "annualized_volatility",
     "assess_sppi",
